@@ -1,11 +1,29 @@
 package com.games.controllers;
 
+import com.games.model.dto.PlayerDTO;
+import com.games.model.entity.Player;
+import com.games.model.services.PlayerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("")
 public class PlayerController {
+
+    @Autowired
+    PlayerService playerService;
+
+    @PostMapping("/players")
+    public ResponseEntity<?> createPlayer (@RequestBody Player player){
+        PlayerDTO playerDTO = playerService.createPlayer(player);
+        return new ResponseEntity<>(playerDTO, HttpStatus.CREATED);
+    }
+
     /*URL’s:
 POST: /players: crea un jugador/a.
 PUT /players: modifica el nom del jugador/a.

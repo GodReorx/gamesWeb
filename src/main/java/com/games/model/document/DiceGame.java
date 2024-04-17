@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "dicegame")
 public class DiceGame {
     @Id
@@ -18,4 +17,10 @@ public class DiceGame {
     private Integer idPlayer;
     private int dice1;
     private int dice2;
+
+    public DiceGame(Integer idPlayer, int dice1, int dice2) {
+        this.idPlayer = idPlayer;
+        this.dice1 = dice1;
+        this.dice2 = dice2;
+    }
 }

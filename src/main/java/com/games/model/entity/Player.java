@@ -15,7 +15,8 @@ public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String user;
+    private String email;
     private String password;
+    private String user;
     private Date registrationDate;
 }
