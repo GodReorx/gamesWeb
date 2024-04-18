@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<Player,Integer> {
-    /*@Query("SELECT p FROM Player p WHERE p.email = ?1 AND p.user = ?2")
-    Player findPlayerByEmailAndUser(String email, String user);*/
+    @Query("SELECT COUNT(p) > 0 FROM Player p WHERE p.email = ?1")
+    boolean findPlayerByEmailBoolean(String email);
 }
