@@ -1,4 +1,4 @@
-package com.games.model.services;
+package com.games.model.services.player;
 
 import com.games.exceptions.ExcpPlayerNotCreated;
 import com.games.model.document.DiceGame;
@@ -45,18 +45,6 @@ public class PlayerServiceImpl implements PlayerService{
     }
 
     @Override
-    public PlayerDTO rollDices(Player player) {
-
-        return null; //Realiza una tirada
-    }
-
-    @Override
-    public void deleteAllRolls(Player player) {
-        diceGameRepository.deleteById(player.getId().toString());
-//Elimina toda las tiradas de un jugador
-    }
-
-    @Override
     public List<PlayerDTO> getAllPlayers() {
         List<Player> playerList = playerRepository.findAll();
         return playerList.stream().map(player -> playerToDTO(player)).collect(Collectors.toList());
@@ -66,34 +54,6 @@ public class PlayerServiceImpl implements PlayerService{
     public List<DiceGameDTO> getAllPlayerRolls(Player player) {
         List<DiceGame> diceGameList = diceGameRepository.findByIdPlayer(player.getId());
         return diceGameList.stream().map(diceGame -> diceGameToDTO(diceGame)).collect(Collectors.toList());
-    }
-
-    @Override
-    public PlayerDTO getLoser() {
-        List<PlayerDTO> playerDTOList = getAllPlayers();
-        PlayerDTO loser = null;
-        float lowSuccesPercentage = Float.MAX_VALUE;
-        for(PlayerDTO playerDTO : playerDTOList){
-            if(playerDTO.getSuccessPercentage() < lowSuccesPercentage){
-                lowSuccesPercentage = playerDTO.getSuccessPercentage();
-                loser = playerDTO;
-            }
-        }
-        return loser; //Retorna el jugador que tiene el porcentaje mas bajo
-    }
-
-    @Override
-    public PlayerDTO getWinner() {
-        List<PlayerDTO> playerDTOList = getAllPlayers();
-        PlayerDTO winner = null;
-        float lowSuccesPercentage = 0f;
-        for(PlayerDTO playerDTO : playerDTOList){
-            if(playerDTO.getSuccessPercentage() > lowSuccesPercentage){
-                lowSuccesPercentage = playerDTO.getSuccessPercentage();
-                winner = playerDTO;
-            }
-        }
-        return winner; //Retorna el jugador que tiene el porcentaje mas alto
     }
 
     private PlayerDTO newPlayerToDTO (Player player){

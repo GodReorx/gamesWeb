@@ -2,7 +2,7 @@ package com.games.controllers;
 
 import com.games.model.dto.PlayerDTO;
 import com.games.model.entity.Player;
-import com.games.model.services.PlayerService;
+import com.games.model.services.player.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
