@@ -28,6 +28,8 @@ public class DiceGameServiceImpl implements DiceGameService {
         Random random = new Random();
         int dice1 = random.nextInt(6) + 1;
         int dice2 = random.nextInt(6) + 1;
+        DiceGame diceGame = new DiceGame(player.getId(), dice1, dice2);
+        //managerRepository.save(diceGame);
         //ToDO: Tiene que guardarse en la tabla de tiradas de Mongo y guardarse en el playerDTO.
         return null;
     }
