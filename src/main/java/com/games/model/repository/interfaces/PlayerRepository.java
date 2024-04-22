@@ -1,4 +1,4 @@
-package com.games.model.repository;
+package com.games.model.repository.interfaces;
 
 import com.games.model.entity.Player;
 import org.springframework.data.jpa.repository.JpaRepository;

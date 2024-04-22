@@ -40,6 +40,7 @@ public class PlayerDTO {
     private float successPercentageCalc (List<DiceGameDTO> diceGameListCalc){
         float gamesMade = diceGameListCalc.size();
         float gamesWin = 0;
+        if(gamesMade == 0) return 0f;
         for(DiceGameDTO game : diceGameListCalc){
             if(game.isWin()){
                 gamesWin++;

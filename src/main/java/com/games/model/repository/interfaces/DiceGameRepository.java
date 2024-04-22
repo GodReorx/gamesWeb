@@ -1,4 +1,4 @@
-package com.games.model.repository;
+package com.games.model.repository.interfaces;
 
 import com.games.model.document.DiceGame;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -11,4 +11,6 @@ import java.util.List;
 public interface DiceGameRepository extends MongoRepository<DiceGame,String> {
     @Query("{'idPlayer' : ?0 }") //Asi especificas que campo ha de mirar en mongo
     List<DiceGame> findByIdPlayer(Integer idPlayer);
+    @Query("{'idPlayer' : ?0 }")
+    void deleteByIdPlayer(Integer idPlayer);
 }
