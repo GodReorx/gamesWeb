@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ManagerRepository {
 
     <T> T save(T t);
-    <T> Optional<T> readOne(T t);
+    <T> Optional<T> readOne(Class<T> classRepo, String id);
     <T> List<T> readAll(Class<T> classRepo);
     <T> void delete(T t);
 
@@ -18,7 +18,7 @@ public interface ManagerRepository {
 
     //Only for DiceGame
     List<DiceGame> findByIdPlayerDice(Integer idPlayer);
-    void deleteByIdPlayerDice(Integer idPlayer);
+    void deleteByIdPlayerDice(String id);
 
     //Only for RankingDice
     RankingDice findMaxSuccessPercentage();

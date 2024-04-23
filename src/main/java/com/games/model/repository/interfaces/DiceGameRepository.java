@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface DiceGameRepository extends MongoRepository<DiceGame,String> {
-    @Query("{'idPlayer' : ?0 }") //Asi especificas que campo ha de mirar en mongo
+    @Query(value = "{'idPlayer' : ?0 }")
     List<DiceGame> findByIdPlayer(Integer idPlayer);
-    @Query("{'idPlayer' : ?0 }")
+    @Query(value = "{'idPlayer' : ?0 }", delete = true)
     void deleteByIdPlayer(Integer idPlayer);
 }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//ToDo: Crear las excepciones
 @Service
 public class PlayerServiceImpl implements PlayerService{
     @Autowired
@@ -34,7 +35,7 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public PlayerDTO modifyUsername(Player player) {
-        Optional<Player> playerDB = managerRepository.readOne(player);
+        Optional<Player> playerDB = managerRepository.readOne(Player.class, player.getId().toString());
         Player playerUpdate = playerDB.get();
         playerUpdate.setNickname(player.getNickname());
         List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(managerRepository.findByIdPlayerDice(player.getId()));

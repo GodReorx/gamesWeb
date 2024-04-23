@@ -35,15 +35,15 @@ public class ManagerRepositoryImpl implements ManagerRepository{
     }
 
     @Override
-    public <T> Optional<T> readOne(T t) {
-        if (t instanceof Player) {
-            return (Optional<T>) playerRepository.findById(((Player) t).getId());
-        } else if (t instanceof DiceGame) {
-            return (Optional<T>) diceGameRepository.findById(((DiceGame)t).getIdPlayer().toString());
-        } else if (t instanceof RankingDice) {
-            return (Optional<T>) rankingDiceRespository.findById(((RankingDice)t).getPlayerId().toString());
+    public <T> Optional<T> readOne(Class<T> classRepo, String id) {
+        if (classRepo.equals(Player.class)) {
+            return (Optional<T>) playerRepository.findById(Integer.parseInt(id));
+        } else if (classRepo.equals(DiceGame.class)) {
+            return (Optional<T>) diceGameRepository.findById(id);
+        } else if (classRepo.equals(RankingDice.class)) {
+            return (Optional<T>) rankingDiceRespository.findByIdPlayer(Integer.parseInt(id));
         } else {
-            throw new UnsupportedOperationException("Unsupported entity type: " + t.getClass());
+            throw new UnsupportedOperationException("Unsupported entity type: " + classRepo);
         }
     }
 
@@ -84,17 +84,19 @@ public class ManagerRepositoryImpl implements ManagerRepository{
     }
 
     @Override //Only for DiceGameRepository
-    public void deleteByIdPlayerDice(Integer idPlayer) {
-        diceGameRepository.deleteByIdPlayer(idPlayer);
+    public void deleteByIdPlayerDice(String idPlayer) {
+        diceGameRepository.deleteByIdPlayer(Integer.parseInt(idPlayer));
     }
 
     @Override //Only for RankingDice
     public RankingDice findMaxSuccessPercentage() {
-        return rankingDiceRespository.findMaxSuccessPercentage();
+        List<RankingDice> rankingDiceList = rankingDiceRespository.findOneByOrderBySuccessPercentageDesc();
+        return rankingDiceList.get(0);
     }
 
     @Override //Only for RankingDice
     public RankingDice findMinsuccessPercentage() {
-        return rankingDiceRespository.findMinsuccessPercentage();
+        List<RankingDice> rankingDiceList = rankingDiceRespository.findOneByOrderBySuccessPercentageAsc();
+        return rankingDiceList.get(0);
     }
 }

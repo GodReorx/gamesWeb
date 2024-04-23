@@ -2,6 +2,7 @@ package com.games.model.services;
 
 import com.games.model.dto.DiceGameDTO;
 import com.games.model.dto.PlayerDTO;
+import com.games.model.dto.RankingDiceDTO;
 import com.games.model.entity.Player;
 import com.games.model.services.dicegame.DiceGameService;
 import com.games.model.services.player.PlayerService;
@@ -35,27 +36,32 @@ public class ManagerServiceImpl implements ManagerService{
     }
 
     @Override
-    public List<DiceGameDTO> getAllPlayerRolls(Player player) {
-        return diceGameService.getAllPlayerRolls(player);
+    public List<DiceGameDTO> getAllPlayerRolls(String id) {
+        return diceGameService.getAllPlayerRolls(id);
     }
 
     @Override
-    public PlayerDTO rollDices(Player player) {
-        return diceGameService.rollDices(player);
+    public PlayerDTO rollDices(String id) {
+        return diceGameService.rollDices(id);
     }
 
     @Override
-    public void deleteAllRolls(Player player) {
-        diceGameService.deleteAllRolls(player);
+    public void deleteAllRolls(String id) {
+        diceGameService.deleteAllRolls(id);
     }
 
     @Override
-    public PlayerDTO getLoser() {
+    public RankingDiceDTO getLoser() {
         return rankingDiceService.getLoser();
     }
 
     @Override
-    public PlayerDTO getWinner() {
+    public RankingDiceDTO getWinner() {
         return rankingDiceService.getWinner();
+    }
+
+    @Override
+    public List<RankingDiceDTO> getRanking() {
+        return rankingDiceService.getRanking();
     }
 }

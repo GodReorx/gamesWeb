@@ -6,18 +6,19 @@ import jakarta.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "rankingDice")
-public class RankingDice {
+public class RankingDice implements Comparable<RankingDice>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     String id;
-    Integer playerId;
+    Integer idPlayer;
+    String namePlayer;
     float successPercentage;
 
     public RankingDice(){}
 
-    public RankingDice(String id, Integer playerId, float successPercentage) {
-        this.id = id;
-        this.playerId = playerId;
+    public RankingDice(Integer idPlayer, String namePlayer, float successPercentage) {
+        this.idPlayer = idPlayer;
+        this.namePlayer = namePlayer;
         this.successPercentage = successPercentage;
     }
 
@@ -29,12 +30,12 @@ public class RankingDice {
         this.id = id;
     }
 
-    public Integer getPlayerId() {
-        return playerId;
+    public Integer getIdPlayer() {
+        return idPlayer;
     }
 
-    public void setPlayerId(Integer playerId) {
-        this.playerId = playerId;
+    public void setIdPlayer(Integer idPlayer) {
+        this.idPlayer = idPlayer;
     }
 
     public float getSuccessPercentage() {
@@ -43,5 +44,24 @@ public class RankingDice {
 
     public void setSuccessPercentage(float successPercentage) {
         this.successPercentage = successPercentage;
+    }
+
+    public String getNamePlayer() {
+        return namePlayer;
+    }
+
+    public void setNamePlayer(String namePlayer) {
+        this.namePlayer = namePlayer;
+    }
+
+    @Override
+    public int compareTo(RankingDice o) {
+        if(this.successPercentage < o.successPercentage){
+            return 1;
+        } else if (this.successPercentage == o.successPercentage){
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }
