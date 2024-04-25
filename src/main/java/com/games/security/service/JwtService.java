@@ -1,4 +1,4 @@
-package com.games.security.config;
+package com.games.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+
 public class JwtService {
 
     private static  final String SECRET_KEY = "18D85BD7369C09B7F7F403EABC33B71BC0B938CAEE9E6E6C507290D06CF6DF7C";

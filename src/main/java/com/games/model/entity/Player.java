@@ -2,6 +2,7 @@ package com.games.model.entity;
 
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "player")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Player implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,46 +28,6 @@ public class Player implements UserDetails {
     private Date registrationDate;
     @Enumerated(EnumType.ORDINAL)
     private Role role;
-
-    public Player() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public Date getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -96,6 +61,5 @@ public class Player implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 
 }
