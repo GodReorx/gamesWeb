@@ -1,6 +1,6 @@
 package com.games.security.config;
 
-import com.games.model.repository.interfaces.PlayerRepository;
+import com.games.model.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -4,7 +4,8 @@ import com.games.exceptions.ExcpPlayerNotCreated;
 import com.games.model.dto.DiceGameDTO;
 import com.games.model.dto.PlayerDTO;
 import com.games.model.entity.Player;
-import com.games.model.repository.ManagerRepository;
+import com.games.model.repository.DiceGameRepository;
+import com.games.model.repository.PlayerRepository;
 import com.games.model.services.converter.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,37 +18,44 @@ import java.util.Optional;
 @Service
 public class PlayerServiceImpl implements PlayerService{
     @Autowired
-    ManagerRepository managerRepository;
+    PlayerRepository playerRepository;
+    @Autowired
+    DiceGameRepository diceGameRepository;
 
     @Override
-    public PlayerDTO createPlayer(Player player) {
+    public Player createPlayer(Player player) {
         if(checkIfAnonymous(player)){
-            player.setEmail("anonymous@withoutmail.com");
+            player.setEmail("");
             player.setNickname("ANONYMOUS");
+            player.setPassword("");
+            Player playerDB = playerRepository.save(player);
+            playerDB.setEmail("anonymous"+ playerDB.getId() +"@withoutmail.com");
+            return playerRepository.save(playerDB);
+
         } else {
-            boolean existEmail = managerRepository.findPlayerByEmailBoolean(player.getEmail());
+            boolean existEmail = playerRepository.existsPlayerByEmail(player.getEmail());
             if(existEmail){
                 throw new ExcpPlayerNotCreated();
             }
+            return playerRepository.save(player);
         }
-        return DtoConverter.newPlayerToDTO(managerRepository.save(player));
     }
 
     @Override
     public PlayerDTO modifyUsername(Player player) {
-        Optional<Player> playerDB = managerRepository.readOne(Player.class, player.getId().toString());
+        Optional<Player> playerDB = playerRepository.findById(player.getId());
         Player playerUpdate = playerDB.get();
         playerUpdate.setNickname(player.getNickname());
-        List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(managerRepository.findByIdPlayerDice(player.getId()));
-        return DtoConverter.playerToDTO(managerRepository.save(playerUpdate), diceGameDTOList);
+        List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(player.getId()));
+        return DtoConverter.playerToDTO(playerRepository.save(playerUpdate), diceGameDTOList);
     }
 
     @Override
     public List<PlayerDTO> getAllPlayers() {
-        List<Player> playerList = managerRepository.readAll(Player.class);
+        List<Player> playerList = playerRepository.findAll();
         List<PlayerDTO> playerDTOList = new ArrayList<>();
         for(Player player : playerList){
-            List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(managerRepository.findByIdPlayerDice(player.getId()));
+            List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(player.getId()));
             playerDTOList.add(DtoConverter.playerToDTO(player, diceGameDTOList));
         }
         return playerDTOList;

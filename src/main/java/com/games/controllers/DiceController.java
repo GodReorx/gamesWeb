@@ -18,19 +18,19 @@ public class DiceController {
     ManagerService managerService;
 
     @PostMapping
-    public ResponseEntity<?> rollDices(@PathVariable("id") String id){
+    public ResponseEntity<?> rollDices(@PathVariable("id") Integer id){
         PlayerDTO playerDTO = managerService.rollDices(id);
         return new ResponseEntity<>(playerDTO, HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteAllRolls(@PathVariable("id") String id){
+    public ResponseEntity<?> deleteAllRolls(@PathVariable("id") Integer id){
         managerService.deleteAllRolls(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<?> allPlayerRolls(@PathVariable("id") String id){
+    public ResponseEntity<?> allPlayerRolls(@PathVariable("id") Integer id){
         List<DiceGameDTO> diceGameDTOList = managerService.getAllPlayerRolls(id);
         return new ResponseEntity<>(diceGameDTOList, HttpStatus.OK);
     }

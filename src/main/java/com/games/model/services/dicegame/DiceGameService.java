@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface DiceGameService {
-    List<DiceGameDTO> getAllPlayerRolls (String id);
-    PlayerDTO rollDices(String id);
-    void deleteAllRolls(String id);
+    List<DiceGameDTO> getAllPlayerRolls (Integer id);
+    PlayerDTO rollDices(Integer id);
+    void deleteAllRolls(Integer id);
 }

@@ -1,8 +1,6 @@
 package com.games.controllers;
 
-import com.games.model.dto.DiceGameDTO;
 import com.games.model.dto.PlayerDTO;
-import com.games.model.dto.RankingDiceDTO;
 import com.games.model.entity.Player;
 import com.games.model.services.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,8 @@ public class PlayerController {
 
     @PostMapping
     public ResponseEntity<?> createPlayer (@RequestBody Player player){
-        PlayerDTO playerDTO = managerService.createPlayer(player);
-        return new ResponseEntity<>(playerDTO, HttpStatus.CREATED);
+        Player playerDB = managerService.createPlayer(player);
+        return new ResponseEntity<>(playerDB, HttpStatus.CREATED);
     }
     @PutMapping
     public ResponseEntity<?> updatePlayerName(@RequestBody Player player){

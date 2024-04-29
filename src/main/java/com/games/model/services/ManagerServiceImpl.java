@@ -21,7 +21,7 @@ public class ManagerServiceImpl implements ManagerService{
     @Autowired
     RankingDiceService rankingDiceService;
     @Override
-    public PlayerDTO createPlayer(Player player) {
+    public Player createPlayer(Player player) {
         return playerService.createPlayer(player);
     }
 
@@ -36,17 +36,17 @@ public class ManagerServiceImpl implements ManagerService{
     }
 
     @Override
-    public List<DiceGameDTO> getAllPlayerRolls(String id) {
+    public List<DiceGameDTO> getAllPlayerRolls(Integer id) {
         return diceGameService.getAllPlayerRolls(id);
     }
 
     @Override
-    public PlayerDTO rollDices(String id) {
+    public PlayerDTO rollDices(Integer id) {
         return diceGameService.rollDices(id);
     }
 
     @Override
-    public void deleteAllRolls(String id) {
+    public void deleteAllRolls(Integer id) {
         diceGameService.deleteAllRolls(id);
     }
 

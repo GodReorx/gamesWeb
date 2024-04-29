@@ -2,7 +2,7 @@ package com.games.model.services.rankingdice;
 
 import com.games.model.document.RankingDice;
 import com.games.model.dto.RankingDiceDTO;
-import com.games.model.repository.ManagerRepository;
+import com.games.model.repository.RankingDiceRespository;
 import com.games.model.services.converter.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,23 +14,23 @@ import java.util.List;
 @Service
 public class RankingDiceServiceImpl implements RankingDiceService {
     @Autowired
-    ManagerRepository managerRepository;
+    RankingDiceRespository rankingDiceRespository;
 
     @Override
     public RankingDiceDTO getLoser() {
-        RankingDice loser = managerRepository.findMinsuccessPercentage();
-        return DtoConverter.rankingDiceToDTO(loser);
+        List<RankingDice> rankingDiceList = rankingDiceRespository.findOneByOrderBySuccessPercentageAsc();
+        return DtoConverter.rankingDiceToDTO(rankingDiceList.getFirst());
     }
 
     @Override
     public RankingDiceDTO getWinner() {
-        RankingDice winner = managerRepository.findMaxSuccessPercentage();
-        return DtoConverter.rankingDiceToDTO(winner);
+        List<RankingDice> rankingDiceList = rankingDiceRespository.findOneByOrderBySuccessPercentageDesc();
+        return DtoConverter.rankingDiceToDTO(rankingDiceList.getFirst());
     }
 
     @Override
     public List<RankingDiceDTO> getRanking() {
-        List<RankingDice> rankingDiceList = managerRepository.readAll(RankingDice.class);
+        List<RankingDice> rankingDiceList = rankingDiceRespository.findAll();
         Collections.sort(rankingDiceList);
         return DtoConverter.rankingDiceDTOList(rankingDiceList);
     }

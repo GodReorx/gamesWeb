@@ -1,4 +1,4 @@
-package com.games.model.repository.interfaces;
+package com.games.model.repository;
 
 import com.games.model.entity.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface PlayerRepository extends JpaRepository<Player,Integer> {
 
     Optional<Player> findUserByEmail(String email);
+    boolean existsPlayerByEmail(String email);
 }
