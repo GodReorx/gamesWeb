@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.SecretKey;
 import java.util.List;
 import java.util.Optional;
-
+//ToDo: Usar el JwtService para chequear los usuarios, asi quitas los metodos de abajo
 @RestController
 @RequestMapping("/players/{id}/games")
 
