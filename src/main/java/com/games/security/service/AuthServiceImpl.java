@@ -24,7 +24,6 @@ public class AuthServiceImpl implements AuthService{
     private final AuthenticationManager authenticationManager;
     private final ManagerService managerService;
 
-    //ToDo: en register, controlar si viene en blanco los datos, para poder crear el anonimo. Si no vienen en blanco, chequear si el email existe y no dejar crear user en ese caso.
     @Override
     public AuthResponse register(RegisterRequest request) {
         boolean playerExist = playerRepository.existsPlayerByEmail(request.getEmail());

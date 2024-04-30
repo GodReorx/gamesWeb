@@ -18,7 +18,8 @@ import java.util.function.Function;
 
 public class JwtService {
 
-    private static  final String SECRET_KEY = "18D85BD7369C09B7F7F403EABC33B71BC0B938CAEE9E6E6C507290D06CF6DF7C";
+    private static final String SECRET_KEY = "18D85BD7369C09B7F7F403EABC33B71BC0B938CAEE9E6E6C507290D06CF6DF7C";
+    private static final long TIMEEXPIRATION = 172800000;
 
     public String generateToken(UserDetails userDetails){
         return generateToken(new HashMap<>(), userDetails);
@@ -28,8 +29,8 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .expiration(new Date(System.currentTimeMillis() + TIMEEXPIRATION))
+                .signWith(getSignInKey(),SignatureAlgorithm.HS256)
                 .compact();
     }
     public String getPlayer(String token){
