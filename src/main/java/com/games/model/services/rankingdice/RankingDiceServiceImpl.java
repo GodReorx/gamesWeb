@@ -1,5 +1,6 @@
 package com.games.model.services.rankingdice;
 
+import com.games.exceptions.ExcpNotRanking;
 import com.games.model.document.RankingDice;
 import com.games.model.dto.RankingDiceDTO;
 import com.games.model.repository.RankingDiceRespository;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-//ToDo: Crear las excepciones
 @Service
 public class RankingDiceServiceImpl implements RankingDiceService {
     @Autowired
@@ -19,20 +19,32 @@ public class RankingDiceServiceImpl implements RankingDiceService {
     @Override
     public RankingDiceDTO getLoser() {
         List<RankingDice> rankingDiceList = rankingDiceRespository.findOneByOrderBySuccessPercentageAsc();
-        return DtoConverter.rankingDiceToDTO(rankingDiceList.getFirst());
+        if (!rankingDiceList.isEmpty()) {
+            return DtoConverter.rankingDiceToDTO(rankingDiceList.getFirst());
+        } else {
+            throw new ExcpNotRanking();
+        }
     }
 
     @Override
     public RankingDiceDTO getWinner() {
         List<RankingDice> rankingDiceList = rankingDiceRespository.findOneByOrderBySuccessPercentageDesc();
-        return DtoConverter.rankingDiceToDTO(rankingDiceList.getFirst());
+        if (!rankingDiceList.isEmpty()) {
+            return DtoConverter.rankingDiceToDTO(rankingDiceList.getFirst());
+        } else {
+            throw new ExcpNotRanking();
+        }
     }
 
     @Override
     public List<RankingDiceDTO> getRanking() {
         List<RankingDice> rankingDiceList = rankingDiceRespository.findAll();
-        Collections.sort(rankingDiceList);
-        return DtoConverter.rankingDiceDTOList(rankingDiceList);
+        if (!rankingDiceList.isEmpty()) {
+            Collections.sort(rankingDiceList);
+            return DtoConverter.rankingDiceDTOList(rankingDiceList);
+        } else {
+            throw new ExcpNotRanking();
+        }
     }
 
 }

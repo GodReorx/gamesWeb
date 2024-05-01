@@ -1,6 +1,8 @@
 package com.games.model.services.player;
 
+import com.games.exceptions.ExcpNotGetAllPlayers;
 import com.games.exceptions.ExcpPlayerNotCreated;
+import com.games.exceptions.ExcpPlayerNotFound;
 import com.games.model.dto.DiceGameDTO;
 import com.games.model.dto.PlayerDTO;
 import com.games.model.entity.Player;
@@ -14,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//ToDo: Crear las excepciones
 @Service
 public class PlayerServiceImpl implements PlayerService{
     @Autowired
@@ -44,29 +45,33 @@ public class PlayerServiceImpl implements PlayerService{
     @Override
     public PlayerDTO modifyUsername(Player player) {
         Optional<Player> playerDB = playerRepository.findById(player.getId());
-        Player playerUpdate = playerDB.get();
-        playerUpdate.setNickname(player.getNickname());
-        List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(player.getId()));
-        return DtoConverter.playerToDTO(playerRepository.save(playerUpdate), diceGameDTOList);
+        if (playerDB.isPresent()) {
+            Player playerUpdate = playerDB.get();
+            playerUpdate.setNickname(player.getNickname());
+            List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(player.getId()));
+            return DtoConverter.playerToDTO(playerRepository.save(playerUpdate), diceGameDTOList);
+        } else {
+            throw new ExcpPlayerNotFound(player.getId());
+        }
     }
 
     @Override
     public List<PlayerDTO> getAllPlayers() {
         List<Player> playerList = playerRepository.findAll();
-        List<PlayerDTO> playerDTOList = new ArrayList<>();
-        for(Player player : playerList){
-            List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(player.getId()));
-            playerDTOList.add(DtoConverter.playerToDTO(player, diceGameDTOList));
+        if (!playerList.isEmpty()) {
+            List<PlayerDTO> playerDTOList = new ArrayList<>();
+            for (Player player : playerList) {
+                List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(player.getId()));
+                playerDTOList.add(DtoConverter.playerToDTO(player, diceGameDTOList));
+            }
+            return playerDTOList;
+        } else {
+            throw new ExcpNotGetAllPlayers();
         }
-        return playerDTOList;
     }
 
     private boolean checkIfAnonymous (Player player){
-        if(player.getEmail() == null || player.getEmail().isEmpty() || player.getEmail().isBlank()){
-            return true;
-        } else{
-            return false;
-        }
+        return player.getEmail() == null || player.getEmail().isEmpty() || player.getEmail().isBlank();
     }
 
 }

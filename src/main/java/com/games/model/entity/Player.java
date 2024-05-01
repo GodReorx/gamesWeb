@@ -24,7 +24,7 @@ public class Player implements UserDetails {
     private String email;
     private String password;
     private String nickname;
-    @Column(insertable = false, updatable = false)
+    @Column(updatable = false)
     private Date registrationDate;
     @Enumerated(EnumType.ORDINAL)
     private Role role;
@@ -60,6 +60,11 @@ public class Player implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        registrationDate = new Date();
     }
 
 }

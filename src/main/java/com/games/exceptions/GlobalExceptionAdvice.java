@@ -9,22 +9,27 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ExcpPlayerNotFound.class)
-    public ResponseEntity<String> handleFlowerNotFoundException(ExcpPlayerNotFound ex){
+    public ResponseEntity<String> handlePlayerNotFound(ExcpPlayerNotFound ex){
         return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ExcpPlayerNotCreated.class)
-    public ResponseEntity<String> handleFlowerNotCreated(ExcpPlayerNotCreated ex){
+    public ResponseEntity<String> handlePlayerNotCreated(ExcpPlayerNotCreated ex){
         return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ExcpPlayerNull.class)
-    public ResponseEntity<String> handleFlowerIsNull(ExcpPlayerNull ex){
+    public ResponseEntity<String> handlePlayerIsNull(ExcpPlayerNull ex){
         return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ExcpNotGetAllPlayers.class)
-    public ResponseEntity<String> handleFlowerNotGetAll(ExcpNotGetAllPlayers ex){
+    public ResponseEntity<String> handleNotGetAllPlayers(ExcpNotGetAllPlayers ex){
+        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ExcpNotRanking.class)
+    public ResponseEntity<String> handleNotRanking(ExcpNotRanking ex){
         return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

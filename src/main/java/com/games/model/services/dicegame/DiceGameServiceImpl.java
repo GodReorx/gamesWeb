@@ -1,5 +1,6 @@
 package com.games.model.services.dicegame;
 
+import com.games.exceptions.ExcpPlayerNotFound;
 import com.games.model.document.DiceGame;
 import com.games.model.document.RankingDice;
 import com.games.model.dto.DiceGameDTO;
@@ -17,33 +18,40 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-//ToDo: Crear las excepciones
 @Service
 public class DiceGameServiceImpl implements DiceGameService {
     @Autowired
-    DiceGameRepository diceGameRepository;
+    private DiceGameRepository diceGameRepository;
     @Autowired
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
     @Autowired
     private RankingDiceRespository rankingDiceRespository;
 
     @Override
     public List<DiceGameDTO> getAllPlayerRolls(Integer id) {
         List<DiceGame> diceGameList = diceGameRepository.findByIdPlayer(id);
-        return diceGameList.stream().map(DtoConverter::diceGameToDTO).collect(Collectors.toList());
+        if (!diceGameList.isEmpty()) {
+            return diceGameList.stream().map(DtoConverter::diceGameToDTO).collect(Collectors.toList());
+        }else {
+            throw new ExcpPlayerNotFound(id);
+        }
     }
     @Override
     public PlayerDTO rollDices(Integer id) {
         Optional<Player> player = playerRepository.findById(id);
-        Random random = new Random();
-        int dice1 = random.nextInt(6) + 1;
-        int dice2 = random.nextInt(6) + 1;
-        DiceGame diceGame = new DiceGame(player.get().getId(), dice1, dice2);
-        diceGameRepository.save(diceGame);
-        List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(id));
-        PlayerDTO playerDTO = DtoConverter.playerToDTO(player.get(),diceGameDTOList);
-        addToRanking(playerDTO);
-        return playerDTO;
+        if (player.isPresent()) {
+            Random random = new Random();
+            int dice1 = random.nextInt(6) + 1;
+            int dice2 = random.nextInt(6) + 1;
+            DiceGame diceGame = new DiceGame(player.get().getId(), dice1, dice2);
+            diceGameRepository.save(diceGame);
+            List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(id));
+            PlayerDTO playerDTO = DtoConverter.playerToDTO(player.get(), diceGameDTOList);
+            addToRanking(playerDTO);
+            return playerDTO;
+        } else {
+            throw new ExcpPlayerNotFound(id);
+        }
     }
 
     @Override
