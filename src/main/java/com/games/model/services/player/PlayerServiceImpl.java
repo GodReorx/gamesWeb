@@ -19,9 +19,9 @@ import java.util.Optional;
 @Service
 public class PlayerServiceImpl implements PlayerService{
     @Autowired
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
     @Autowired
-    DiceGameRepository diceGameRepository;
+    private DiceGameRepository diceGameRepository;
 
     @Override
     public Player createPlayer(Player player) {

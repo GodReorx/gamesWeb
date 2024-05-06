@@ -15,11 +15,11 @@ import java.util.List;
 @Service
 public class ManagerServiceImpl implements ManagerService{
     @Autowired
-    PlayerService playerService;
+    private PlayerService playerService;
     @Autowired
-    DiceGameService diceGameService;
+    private DiceGameService diceGameService;
     @Autowired
-    RankingDiceService rankingDiceService;
+    private RankingDiceService rankingDiceService;
     @Override
     public Player createPlayer(Player player) {
         return playerService.createPlayer(player);

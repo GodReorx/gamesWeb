@@ -9,4 +9,7 @@ https://medium.com/spring-boot/spring-boot-3-spring-security-6-jwt-authenticatio
 
 
 https://www.youtube.com/watch?v=KBvBY5qyfEM estoy en el 1h 39min
+
+
+https://www.youtube.com/watch?v=TdITcVD64zI
  */

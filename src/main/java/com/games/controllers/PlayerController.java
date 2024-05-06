@@ -16,10 +16,10 @@ import java.util.Map;
 @RequestMapping("/players")
 public class PlayerController {
     @Autowired
-    ManagerService managerService;
+    private ManagerService managerService;
 
     @Autowired
-    JwtService jwtService;
+    private JwtService jwtService;
 
 
     @PostMapping

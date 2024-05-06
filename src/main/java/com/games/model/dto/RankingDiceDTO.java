@@ -1,9 +1,9 @@
 package com.games.model.dto;
 
 public class RankingDiceDTO implements Comparable<RankingDiceDTO> {
-    Integer playerId;
-    String namePlayer;
-    float successPercentage;
+    private Integer playerId;
+    private String namePlayer;
+    private float successPercentage;
 
     public RankingDiceDTO() {
     }

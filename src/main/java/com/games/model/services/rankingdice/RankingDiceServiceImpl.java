@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class RankingDiceServiceImpl implements RankingDiceService {
     @Autowired
-    RankingDiceRespository rankingDiceRespository;
+    private RankingDiceRespository rankingDiceRespository;
 
     @Override
     public RankingDiceDTO getLoser() {

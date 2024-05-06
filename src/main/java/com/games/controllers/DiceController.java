@@ -16,9 +16,9 @@ import java.util.List;
 
 public class DiceController {
     @Autowired
-    ManagerService managerService;
+    private ManagerService managerService;
     @Autowired
-    JwtService jwtService;
+    private JwtService jwtService;
 
     private static final String SECRET_KEY = "18D85BD7369C09B7F7F403EABC33B71BC0B938CAEE9E6E6C507290D06CF6DF7C";
 

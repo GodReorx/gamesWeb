@@ -17,7 +17,7 @@ import java.util.List;
 public class RankingDiceController {
 
     @Autowired
-    ManagerService managerService;
+    private ManagerService managerService;
 
     @GetMapping
     public ResponseEntity<?> getRanking(){

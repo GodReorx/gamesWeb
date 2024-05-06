@@ -9,9 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class RankingDice implements Comparable<RankingDice>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    String id;
-    Integer idPlayer;
-    String namePlayer;
+    private String id;
+    private Integer idPlayer;
+    private String namePlayer;
     float successPercentage;
 
     public RankingDice(){}

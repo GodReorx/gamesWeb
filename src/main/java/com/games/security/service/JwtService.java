@@ -24,7 +24,7 @@ import java.util.function.Function;
 public class JwtService {
 
     @Autowired
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
 
     private static final String SECRET_KEY = "18D85BD7369C09B7F7F403EABC33B71BC0B938CAEE9E6E6C507290D06CF6DF7C";
     private static final long TIMEEXPIRATION = 172800000;
