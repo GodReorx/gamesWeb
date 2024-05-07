@@ -1,5 +1,6 @@
 package com.games.model.services.dicegame;
 
+import com.games.exceptions.ExcpPlayerHaveNoRolls;
 import com.games.exceptions.ExcpPlayerNotFound;
 import com.games.model.document.DiceGame;
 import com.games.model.document.RankingDice;
@@ -33,7 +34,7 @@ public class DiceGameServiceImpl implements DiceGameService {
         if (!diceGameList.isEmpty()) {
             return diceGameList.stream().map(DtoConverter::diceGameToDTO).collect(Collectors.toList());
         }else {
-            throw new ExcpPlayerNotFound(id);
+            throw new ExcpPlayerHaveNoRolls();
         }
     }
     @Override

@@ -9,6 +9,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,9 @@ public class JwtService {
     @Autowired
     private PlayerRepository playerRepository;
 
-    private static final String SECRET_KEY = "18D85BD7369C09B7F7F403EABC33B71BC0B938CAEE9E6E6C507290D06CF6DF7C";
-    private static final long TIMEEXPIRATION = 172800000;
+    @Value("${jwt.secretKey}")
+    private String SECRET_KEY;
+    private static final long TIMEEXPIRATION = 86400000;
 
     public String generateToken(UserDetails userDetails){
         return generateToken(new HashMap<>(), userDetails);

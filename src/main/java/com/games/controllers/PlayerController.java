@@ -22,11 +22,6 @@ public class PlayerController {
     private JwtService jwtService;
 
 
-    @PostMapping
-    public ResponseEntity<?> createPlayer (@RequestBody Player player){
-        Player playerDB = managerService.createPlayer(player);
-        return new ResponseEntity<>(playerDB, HttpStatus.CREATED);
-    }
     @PutMapping
     public ResponseEntity<?> updatePlayerName(@RequestHeader("Authorization") String token, @RequestBody Map<String,String> nickname){
         Player playerdb = jwtService.returnPlayer(token);

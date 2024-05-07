@@ -1,7 +1,7 @@
 package com.games.model.services.player;
 
 import com.games.exceptions.ExcpNotGetAllPlayers;
-import com.games.exceptions.ExcpPlayerNotCreated;
+import com.games.exceptions.ExcpPlayerExist;
 import com.games.exceptions.ExcpPlayerNotFound;
 import com.games.model.dto.DiceGameDTO;
 import com.games.model.dto.PlayerDTO;
@@ -37,7 +37,7 @@ public class PlayerServiceImpl implements PlayerService{
         } else {
             boolean existEmail = playerRepository.existsPlayerByEmail(player.getEmail());
             if(existEmail){
-                throw new ExcpPlayerNotCreated();
+                throw new ExcpPlayerExist();
             }
             return playerRepository.save(player);
         }

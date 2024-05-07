@@ -1,5 +1,7 @@
 package com.games.security.service;
 
+import com.games.exceptions.ExcpIncoFormatEmail;
+import com.games.exceptions.ExcpPlayerExist;
 import com.games.exceptions.ExcpPlayerNotCreated;
 import com.games.model.entity.Player;
 import com.games.model.entity.Role;
@@ -28,9 +30,9 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public AuthResponse register(RegisterRequest request) {
-        boolean playerExist = playerRepository.existsPlayerByEmail(request.getEmail());
-        if(!isValidEmail(request.getEmail())) throw new ExcpPlayerNotCreated();
-        if(request.getPassword() != null && request.getEmail() != null && request.getNickname() != null && !playerExist){
+        if(request.getPassword() != null && request.getEmail() != null && request.getNickname() != null){
+            if(!isValidEmail(request.getEmail())) throw new ExcpIncoFormatEmail();
+            if(playerRepository.existsPlayerByEmail(request.getEmail())) throw new ExcpPlayerExist();
             Player player = Player.builder()
                     .nickname(request.getNickname())
                     .email(request.getEmail())
@@ -42,7 +44,7 @@ public class AuthServiceImpl implements AuthService{
             return AuthResponse.builder()
                     .token(jwtToken)
                     .build();
-        } else if (request.getPassword() == null && request.getEmail() == null) {
+        } else if (request.getPassword() == null && request.getEmail() == null && request.getNickname() == null) {
             Player player = Player.builder()
                     .nickname(request.getNickname())
                     .email(request.getEmail())

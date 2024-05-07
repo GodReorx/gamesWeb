@@ -32,4 +32,19 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<String> handleNotRanking(ExcpNotRanking ex){
         return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ExcpPlayerExist.class)
+    public ResponseEntity<String> handlePlayerExist(ExcpPlayerExist ex){
+        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ExcpIncoFormatEmail.class)
+    public ResponseEntity<String> handleIncorFormatEmail(ExcpIncoFormatEmail ex){
+        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ExcpPlayerHaveNoRolls.class)
+    public ResponseEntity<String> handleIncorFormatEmail(ExcpPlayerHaveNoRolls ex){
+        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
