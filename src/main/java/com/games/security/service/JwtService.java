@@ -97,7 +97,11 @@ public class JwtService {
     }
     private String extractUser(String token){
         String jwtToken = token.substring(7);
-        Claims claims = Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(jwtToken).getPayload();
+        Claims claims = Jwts.parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(jwtToken)
+                .getPayload();
         return claims.getSubject();
     }
 }

@@ -8,6 +8,8 @@ import com.games.model.services.ManagerService;
 import com.games.security.models.AuthResponse;
 import com.games.security.models.AuthenticationRequest;
 import com.games.security.models.RegisterRequest;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +29,7 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public AuthResponse register(RegisterRequest request) {
         boolean playerExist = playerRepository.existsPlayerByEmail(request.getEmail());
+        if(!isValidEmail(request.getEmail())) throw new ExcpPlayerNotCreated();
         if(request.getPassword() != null && request.getEmail() != null && request.getNickname() != null && !playerExist){
             Player player = Player.builder()
                     .nickname(request.getNickname())
@@ -68,5 +71,16 @@ public class AuthServiceImpl implements AuthService{
         Player player = playerRepository.findUserByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(player);
         return AuthResponse.builder().token(jwtToken).build();
+    }
+
+    private boolean isValidEmail(String email) {
+        boolean valid = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException e) {
+            valid = false;
+        }
+        return valid;
     }
 }

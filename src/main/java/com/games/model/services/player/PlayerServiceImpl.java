@@ -25,6 +25,7 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public Player createPlayer(Player player) {
+
         if(checkIfAnonymous(player)){
             player.setEmail("");
             player.setNickname("ANONYMOUS");
