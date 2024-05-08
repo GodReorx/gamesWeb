@@ -47,4 +47,9 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<String> handleIncorFormatEmail(ExcpPlayerHaveNoRolls ex){
         return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ExcpNicknameExist.class)
+    public ResponseEntity<String> handleIncorFormatEmail(ExcpNicknameExist ex){
+        return new ResponseEntity<>("ERROR: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

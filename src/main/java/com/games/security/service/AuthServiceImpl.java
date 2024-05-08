@@ -1,8 +1,6 @@
 package com.games.security.service;
 
-import com.games.exceptions.ExcpIncoFormatEmail;
-import com.games.exceptions.ExcpPlayerExist;
-import com.games.exceptions.ExcpPlayerNotCreated;
+import com.games.exceptions.*;
 import com.games.model.entity.Player;
 import com.games.model.entity.Role;
 import com.games.model.repository.PlayerRepository;
@@ -31,34 +29,17 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public AuthResponse register(RegisterRequest request) {
         if(request.getPassword() != null && request.getEmail() != null && request.getNickname() != null){
-            if(!isValidEmail(request.getEmail())) throw new ExcpIncoFormatEmail();
-            if(playerRepository.existsPlayerByEmail(request.getEmail())) throw new ExcpPlayerExist();
-            Player player = Player.builder()
-                    .nickname(request.getNickname())
-                    .email(request.getEmail())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .role(Role.USER)
-                    .build();
-            playerRepository.save(player);
-            var jwtToken = jwtService.generateToken(player);
-            return AuthResponse.builder()
-                    .token(jwtToken)
-                    .build();
-        } else if (request.getPassword() == null && request.getEmail() == null && request.getNickname() == null) {
-            Player player = Player.builder()
-                    .nickname(request.getNickname())
-                    .email(request.getEmail())
-                    .password(request.getPassword())
-                    .role(Role.USER)
-                    .build();
-            managerService.createPlayer(player);
-            var jwtToken = jwtService.generateToken(player);
-            return AuthResponse.builder()
-                    .token(jwtToken)
-                    .build();
+            if(!isValidEmail(request.getEmail()) && !request.getEmail().isBlank()) throw new ExcpIncoFormatEmail();
+            if(playerRepository.existsPlayerByEmail(request.getEmail()) && !request.getEmail().isBlank()) throw new ExcpPlayerExist();
+            if(playerRepository.existsPlayerByNickname(request.getNickname()) && !request.getNickname().isBlank()) throw new ExcpNicknameExist();
         } else {
             throw new ExcpPlayerNotCreated();
         }
+        Player player = managerService.createPlayer(buildPlayer(request));
+        String jwtToken = jwtService.generateToken(player);
+        return AuthResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
 
@@ -71,7 +52,7 @@ public class AuthServiceImpl implements AuthService{
                 )
         );
         Player player = playerRepository.findUserByEmail(request.getEmail()).orElseThrow();
-        var jwtToken = jwtService.generateToken(player);
+        String jwtToken = jwtService.generateToken(player);
         return AuthResponse.builder().token(jwtToken).build();
     }
 
@@ -84,5 +65,14 @@ public class AuthServiceImpl implements AuthService{
             valid = false;
         }
         return valid;
+    }
+
+    private Player buildPlayer(RegisterRequest request){
+        return Player.builder()
+                .nickname(request.getNickname())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.USER)
+                .build();
     }
 }

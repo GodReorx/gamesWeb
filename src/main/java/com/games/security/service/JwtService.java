@@ -1,6 +1,5 @@
 package com.games.security.service;
 
-import com.games.exceptions.ExcpPlayerNotFound;
 import com.games.exceptions.ExcpPlayerNull;
 import com.games.model.entity.Player;
 import com.games.model.repository.PlayerRepository;
@@ -31,8 +30,10 @@ public class JwtService {
     private String SECRET_KEY;
     private static final long TIMEEXPIRATION = 86400000;
 
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(Player player){
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("id", player.getId());
+        return generateToken(extraClaims, player);
     }
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
         return Jwts.builder()
@@ -43,13 +44,19 @@ public class JwtService {
                 .signWith(getSignInKey())
                 .compact();
     }
-    public String getPlayer(String token){
-        return getClaim(token, Claims::getSubject);
-    }
+
 
     public <T> T getClaim(String token, Function<Claims,T> claimsResolver){
         final Claims claims = getAllClaims(token);
         return claimsResolver.apply(claims);
+    }
+    public String getPlayer(String token){
+        return getClaim(token, Claims::getSubject);
+    }
+
+    public Integer getPlayerId(String token){
+        Claims claims = getAllClaims(token);
+        return (Integer) claims.get("id");
     }
 
     private Claims getAllClaims(String token) {
@@ -79,15 +86,6 @@ public class JwtService {
         return getClaim(token, Claims::getExpiration);
     }
 
-    public boolean checkUser(String token, Integer id){
-        String user = extractUser(token);
-        Optional<Player> playerDB = playerRepository.findById(id);
-        if (playerDB.isPresent()) {
-            return user.equals(playerDB.get().getEmail());
-        } else {
-            throw new ExcpPlayerNotFound(id);
-        }
-    }
     public Player returnPlayer(String token){
         String user = extractUser(token);
         Optional<Player> playerDB = playerRepository.findUserByEmail(user);
