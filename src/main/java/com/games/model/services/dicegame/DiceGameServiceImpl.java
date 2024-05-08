@@ -57,7 +57,13 @@ public class DiceGameServiceImpl implements DiceGameService {
 
     @Override
     public void deleteAllRolls(Integer id) {
-        diceGameRepository.deleteByIdPlayer(id);
+        List<DiceGame> diceGameList = diceGameRepository.findByIdPlayer(id);
+        if(!diceGameList.isEmpty()) {
+            diceGameRepository.deleteByIdPlayer(id);
+            rankingDiceRespository.deleteByIdPlayer(id);
+        } else {
+            throw new ExcpPlayerHaveNoRolls();
+        }
     }
 
     private void addToRanking(PlayerDTO playerDTO){

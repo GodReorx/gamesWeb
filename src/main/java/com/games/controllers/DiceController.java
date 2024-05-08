@@ -2,6 +2,7 @@ package com.games.controllers;
 
 import com.games.model.dto.DiceGameDTO;
 import com.games.model.dto.PlayerDTO;
+import com.games.model.entity.Player;
 import com.games.model.services.ManagerService;
 import com.games.security.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/players/{id}/games")
+@RequestMapping("/players/dice")
 
 public class DiceController {
     @Autowired
@@ -24,32 +25,23 @@ public class DiceController {
 
 
     @PostMapping
-    public ResponseEntity<?> rollDices(@RequestHeader("Authorization") String token, @PathVariable("id") Integer id){
-        if(jwtService.checkUser(token,id)) {
-            PlayerDTO playerDTO = managerService.rollDices(id);
-            return new ResponseEntity<>(playerDTO, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+    public ResponseEntity<?> rollDices(@RequestHeader("Authorization") String token){
+        Player player = jwtService.returnPlayer(token);
+        PlayerDTO playerDTO = managerService.rollDices(player.getId());
+        return new ResponseEntity<>(playerDTO, HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteAllRolls(@RequestHeader("Authorization") String token, @PathVariable("id") Integer id){
-        if(jwtService.checkUser(token,id)) {
-            managerService.deleteAllRolls(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+    public ResponseEntity<?> deleteAllRolls(@RequestHeader("Authorization") String token){
+        Player player = jwtService.returnPlayer(token);
+        managerService.deleteAllRolls(player.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<?> allPlayerRolls(@RequestHeader("Authorization") String token, @PathVariable("id") Integer id){
-        if(jwtService.checkUser(token,id)) {
-            List<DiceGameDTO> diceGameDTOList = managerService.getAllPlayerRolls(id);
-            return new ResponseEntity<>(diceGameDTOList, HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+    public ResponseEntity<?> allPlayerRolls(@RequestHeader("Authorization") String token){
+        Player player = jwtService.returnPlayer(token);
+        List<DiceGameDTO> diceGameDTOList = managerService.getAllPlayerRolls(player.getId());
+        return new ResponseEntity<>(diceGameDTOList, HttpStatus.OK);
     }
 }

@@ -15,4 +15,6 @@ public interface RankingDiceRespository extends MongoRepository<RankingDice, Str
     List<RankingDice> findOneByOrderBySuccessPercentageAsc();
     @Query(value = "{'idPlayer' : ?0 }")
     Optional<RankingDice> findByIdPlayer(Integer idPlayer);
+
+    void deleteByIdPlayer(Integer idPlayer);
 }
