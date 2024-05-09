@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ManagerService {
     Player createPlayer(Player player);
-    PlayerDTO modifyUsername(Player player);
+    PlayerDTO modifyUsername(String token, String nickname);
     List<PlayerDTO> getAllPlayers ();
     List<DiceGameDTO> getAllPlayerRolls (Integer id);
     PlayerDTO rollDices(Integer id);

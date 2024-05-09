@@ -1,6 +1,5 @@
 package com.games.security.service;
 
-import com.games.exceptions.ExcpPlayerNull;
 import com.games.model.entity.Player;
 import com.games.model.repository.PlayerRepository;
 import io.jsonwebtoken.Claims;
@@ -16,7 +15,6 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -86,22 +84,4 @@ public class JwtService {
         return getClaim(token, Claims::getExpiration);
     }
 
-    public Player returnPlayer(String token){
-        String user = extractUser(token);
-        Optional<Player> playerDB = playerRepository.findUserByEmail(user);
-        if(playerDB.isPresent()){
-            return playerDB.get();
-        } else {
-            throw new ExcpPlayerNull();
-        }
-    }
-    private String extractUser(String token){
-        String jwtToken = token.substring(7);
-        Claims claims = Jwts.parser()
-                .verifyWith(getSignInKey())
-                .build()
-                .parseSignedClaims(jwtToken)
-                .getPayload();
-        return claims.getSubject();
-    }
 }

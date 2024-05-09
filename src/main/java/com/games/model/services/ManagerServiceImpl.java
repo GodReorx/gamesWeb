@@ -26,8 +26,8 @@ public class ManagerServiceImpl implements ManagerService{
     }
 
     @Override
-    public PlayerDTO modifyUsername(Player player) {
-        return playerService.modifyUsername(player);
+    public PlayerDTO modifyUsername(String token, String nickname) {
+        return playerService.modifyUsername(token, nickname);
     }
 
     @Override

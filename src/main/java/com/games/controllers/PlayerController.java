@@ -1,7 +1,6 @@
 package com.games.controllers;
 
 import com.games.model.dto.PlayerDTO;
-import com.games.model.entity.Player;
 import com.games.model.services.ManagerService;
 import com.games.security.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,8 @@ public class PlayerController {
 
     @PutMapping
     public ResponseEntity<?> updatePlayerName(@RequestHeader("Authorization") String token, @RequestBody Map<String,String> nickname){
-        Player playerdb = jwtService.returnPlayer(token);
-        playerdb.setNickname(nickname.get("nickname"));
-        PlayerDTO playerDTO = managerService.modifyUsername(playerdb);
+        String jwtToken = token.substring(7);
+        PlayerDTO playerDTO = managerService.modifyUsername(jwtToken, nickname.get("nickname"));
         return new ResponseEntity<>(playerDTO, HttpStatus.OK);
     }
 

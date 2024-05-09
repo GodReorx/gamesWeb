@@ -2,7 +2,6 @@ package com.games.controllers;
 
 import com.games.model.dto.DiceGameDTO;
 import com.games.model.dto.PlayerDTO;
-import com.games.model.entity.Player;
 import com.games.model.services.ManagerService;
 import com.games.security.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +25,22 @@ public class DiceController {
 
     @PostMapping
     public ResponseEntity<?> rollDices(@RequestHeader("Authorization") String token){
-        Player player = jwtService.returnPlayer(token);
-        PlayerDTO playerDTO = managerService.rollDices(player.getId());
+        String jwtToken = token.substring(7);
+        PlayerDTO playerDTO = managerService.rollDices(jwtService.getPlayerId(jwtToken));
         return new ResponseEntity<>(playerDTO, HttpStatus.OK);
     }
 
     @DeleteMapping
     public ResponseEntity<?> deleteAllRolls(@RequestHeader("Authorization") String token){
-        Player player = jwtService.returnPlayer(token);
-        managerService.deleteAllRolls(player.getId());
+        String jwtToken = token.substring(7);
+        managerService.deleteAllRolls(jwtService.getPlayerId(jwtToken));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<?> allPlayerRolls(@RequestHeader("Authorization") String token){
-        Player player = jwtService.returnPlayer(token);
-        List<DiceGameDTO> diceGameDTOList = managerService.getAllPlayerRolls(player.getId());
+        String jwtToken = token.substring(7);
+        List<DiceGameDTO> diceGameDTOList = managerService.getAllPlayerRolls(jwtService.getPlayerId(jwtToken));
         return new ResponseEntity<>(diceGameDTOList, HttpStatus.OK);
     }
 }

@@ -8,6 +8,7 @@ import com.games.model.entity.Player;
 import com.games.model.repository.DiceGameRepository;
 import com.games.model.repository.PlayerRepository;
 import com.games.model.services.converter.DtoConverter;
+import com.games.security.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class PlayerServiceImpl implements PlayerService{
     private PlayerRepository playerRepository;
     @Autowired
     private DiceGameRepository diceGameRepository;
+
+    @Autowired
+    private JwtService jwtService;
 
     @Override
     public Player createPlayer(Player player) {
@@ -38,15 +42,15 @@ public class PlayerServiceImpl implements PlayerService{
     }
 
     @Override
-    public PlayerDTO modifyUsername(Player player) {
-        Optional<Player> playerDB = playerRepository.findById(player.getId());
+    public PlayerDTO modifyUsername(String token, String nickname) {
+        Optional<Player> playerDB = playerRepository.findById(jwtService.getPlayerId(token));
         if (playerDB.isPresent()) {
             Player playerUpdate = playerDB.get();
-            playerUpdate.setNickname(player.getNickname());
-            List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(player.getId()));
+            playerUpdate.setNickname(nickname);
+            List<DiceGameDTO> diceGameDTOList = DtoConverter.diceGameDTOList(diceGameRepository.findByIdPlayer(jwtService.getPlayerId(token)));
             return DtoConverter.playerToDTO(playerRepository.save(playerUpdate), diceGameDTOList);
         } else {
-            throw new ExcpPlayerNotFound(player.getId());
+            throw new ExcpPlayerNotFound(jwtService.getPlayerId(token));
         }
     }
 

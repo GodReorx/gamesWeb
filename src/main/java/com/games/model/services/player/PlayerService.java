@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface PlayerService {
     Player createPlayer(Player player);
-    PlayerDTO modifyUsername(Player player);
+    PlayerDTO modifyUsername(String token, String nickname);
     List<PlayerDTO> getAllPlayers ();
 }
